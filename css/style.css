@@ -1,0 +1,36 @@
+
+* {
+  outline: dotted 1px red;
+}
+
+header {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+main {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+main > section > article {
+  float: left;
+  margin-left: 15px;
+}
+
+main > section > article > img {
+  height: 300px;
+  width: 300px;
+}
+
+main > section > article > p {
+  font-size: 26px;
+}
+
+footer {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
