@@ -10,6 +10,7 @@
 // RenderToPage method attached to constructor
 
 var allProductsArr = new Array;
+var totalVotes = 0;
 
 function Product(name, imgSrc) {
   this.name = name;
@@ -41,15 +42,29 @@ var boots = new Product('boots', 'img/boots.jpg');
 //========================================
 
 //function to display random product
-
 var showRandomProduct = function(){
   var randomInt = Math.floor(Math.random() * allProductsArr.length);
   var randomProduct = allProductsArr[randomInt];
   randomProduct.render();
 };
 
+// shows three random products from the array, shows them on page
 for(var i = 0; i < 3; i++){
   showRandomProduct();
 }
 
-
+// === event handler ==== when image gets clicked on, its voteCount goes up, and three new images appear
+var votingSection = document.getElementById('products');
+votingSection.addEventListener('click', handleClickOnProduct);
+function handleClickOnProduct(event) {
+  if(totalVotes < 4) {
+    console.log('times voted: ' + totalVotes);
+    totalVotes++;
+    console.log(event.target);
+  }
+  if(event.target.id === 'banana'){
+    banana.voteCount++;
+    console.log('banana votes: ' + banana.voteCount);
+  }
+  putNewProductsOnPage;
+}
