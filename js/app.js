@@ -13,7 +13,7 @@ var allProductsArr = new Array;
 var totalVotes = 0;
 
 function Product(name, imgSrc) {
-  this.name = name;
+  this.name = name; // this will also be the id for the event listener
   this.imgSrc = imgSrc;
   this.voteCount = 0;
   this.timesShown = -1;
@@ -45,6 +45,8 @@ var bag = new Product('bag','img/bag.jpg');
 var banana = new Product('banana', 'img/banana.jpg');
 var bathroom = new Product('bathroom', 'img/bathroom.jpg');
 var boots = new Product('boots', 'img/boots.jpg');
+var breakfast = new Product('breakfast', 'img/breakfast.jpg');
+var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
 
 //========================================
 
@@ -77,26 +79,12 @@ function handleClickOnProduct(event) {
     totalVotes++;
     // console.log('total votes: ' + totalVotes);
 
-    //TODO: this needs to go into a loop somehow
-    if(event.target.id === 'banana'){
-      banana.voteCount++;
-      console.log('banana votes: ' + banana.voteCount);
-      console.log('banana appearances: ' + banana.timesShown);
-    }
-    if(event.target.id === 'bag'){
-      bag.voteCount++;
-      console.log('bag votes: ' + bag.voteCount);
-      console.log('bag appearances: ' + bag.timesShown);
-    }
-    if(event.target.id === 'bathroom'){
-      bathroom.voteCount++;
-      console.log('bathroom votes: ' + bathroom.voteCount);
-      console.log('bathroom appearances: ' + bathroom.timesShown);
-    }
-    if(event.target.id === 'bathroom'){
-      bathroom.voteCount++;
-      console.log('bathroom votes: ' + bathroom.voteCount);
-      console.log('bathroom appearances: ' + bathroom.timesShown);
+    for(var i = 0; i < allProductsArr.length; i++){
+      if(event.target.id === allProductsArr[i].name){
+        allProductsArr[i].voteCount++;
+        console.log(allProductsArr[i].name + ' votes: ' + allProductsArr[i].voteCount);
+        console.log(allProductsArr[i].name + ' previous appearances: ' + allProductsArr[i].timesShown);
+      }
     }
     putNewProductsOnPage();
   }
