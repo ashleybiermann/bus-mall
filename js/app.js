@@ -32,7 +32,7 @@ Product.prototype.render = function(){
   newP.textContent = 'votes: ' + this.voteCount;
 
   var newP2 = document.createElement('p');
-  newP2.textContent = 'Was an option ' + this.timesShown + 'times before'; //TODO: does the user need to see this right away?
+  newP2.textContent = 'Was an option ' + this.timesShown + ' times before'; //TODO: does the user need to see this right away?
 
   newArticle.appendChild(newImg);
   newArticle.appendChild(newP);
@@ -100,10 +100,10 @@ function handleClickOnProduct(event) {
     }
     putNewProductsOnPage();
   }
-  if(totalVotes === 4){ // 'turns off' the event listener?
+  if(totalVotes === 4){ // TODO: Can this be it's own new page? ... does this 'turn off' the event listener?
     totalVotes++;
     for(var i = 0; i < allProductsArr.length; i++) {
-      allProductsArr[i].render(); //
+      allProductsArr[i].render(); //TODO: can this be replaces with a putAllProductsOnPage function instead?
     }
   }
 }
