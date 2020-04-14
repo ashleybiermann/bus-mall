@@ -87,13 +87,10 @@ votingSection.addEventListener('click', handleClickOnProduct);
 function handleClickOnProduct(event) {
   if(totalVotes < maxVotes) {
     totalVotes++;
-    // console.log('total votes: ' + totalVotes);
 
     for(var i = 0; i < allProductsArr.length; i++){
       if(event.target.id === allProductsArr[i].name){
         allProductsArr[i].voteCount++;
-        console.log(allProductsArr[i].name + ' votes: ' + allProductsArr[i].voteCount);
-        console.log(allProductsArr[i].name + ' previous appearances: ' + allProductsArr[i].timesShown);
       }
     }
     putNewProductsOnPage();
@@ -101,26 +98,50 @@ function handleClickOnProduct(event) {
   if(totalVotes === maxVotes){
     var votingSection = document.getElementById('products');
     votingSection.removeEventListener('click', handleClickOnProduct);
+    // ==== puts ALL products on page, SHOWS CHART
     putAllProductsOnPage();
+    showChart();
   }
 }
+//============ Chart Chart Chart =============================================
+function showChart(){
+  // extracts product names from all products array, stores it in productNames[]
+  var productNames = new Array;
+  for(var i = 0; i < allProductsArr.length; i++){
+    productNames.push(allProductsArr[i].name);
+  }
 
-var ctx = document.getElementById('productDataChart').getContext('2d');
-var chart = new Chart(ctx, {
-  // The type of chart we want to create
-  type: 'line',
+  // extracts product vote counts from all products array, stores it in productVoteCounts[]
+  var productVoteCounts = new Array;
+  for(var i = 0; i< allProductsArr.length; i++){
+    productVoteCounts.push(allProductsArr[i].voteCount);
+  }
 
-  // The data for our dataset
-  data: {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [{
-      label: 'My First dataset',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45]
-    }]
-  },
+  var ctx = document.getElementById('productDataChart').getContext('2d');
+  var productDataChart = new Chart(ctx, {
+    type: 'bar',
 
-  // Configuration options go here
-  options: {}
-});
+    // The data for our dataset
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Votes',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: productVoteCounts,
+      }]
+    },
+
+    // Configuration options go here
+    options:{
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}
+
