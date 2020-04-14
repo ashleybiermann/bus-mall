@@ -27,8 +27,8 @@ Product.prototype.render = function(){
   var newImg = document.createElement('img');
   newImg.src = this.imgSrc;
   newImg.id = this.name; // for event listener, when I need to target it
-  this.timesShown ++; // counts up each times product is rendered
-  var newP = document.createElement('p');
+  this.timesShown ++; // counts up each times product is rendered TODO: does the user need to see this right away?
+  var newP = document.createElement('p'); // TODO: do I even NEED to show the user how many times they voted for something?
   newP.textContent = 'votes: ' + this.voteCount;
   newArticle.appendChild(newImg);
   newArticle.appendChild(newP);
@@ -87,5 +87,10 @@ function handleClickOnProduct(event) {
       console.log('bathroom appearances: ' + bathroom.timesShown);
     }
     putNewProductsOnPage();
+  }
+  if(totalVotes === 4){
+    for(var i = 0; i < allProductsArr.length; i++) {
+      allProductsArr[i].render();
+    }
   }
 }
