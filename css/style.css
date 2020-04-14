@@ -1,3 +1,4 @@
+
 * {
   outline: dotted 1px red;
 }
@@ -14,14 +15,18 @@ main {
   margin-right: auto;
 }
 
-main > article {
+main > section > article {
   float: left;
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
-main > article > img {
-  max-height: 200px;
-  max-width: 50;
+main > section > article > img {
+  height: 300px;
+  width: 300px;
+}
+
+main > section > article > p {
+  font-size: 26px;
 }
 
 footer {
