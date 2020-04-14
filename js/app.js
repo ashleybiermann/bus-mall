@@ -16,6 +16,7 @@ function Product(name, imgSrc) {
   this.name = name;
   this.imgSrc = imgSrc;
   this.voteCount = 0;
+  this.timesShown = 0;
   allProductsArr.push(this);
 }
 
@@ -25,7 +26,8 @@ Product.prototype.render = function(){
   var newArticle = document.createElement('article');
   var newImg = document.createElement('img');
   newImg.src = this.imgSrc;
-  newImg.id = this.name; // will come back for event listener, when I need to target it
+  newImg.id = this.name; // for event listener, when I need to target it
+  this.timesShown ++; // counts up each times product is rendered
   var newP = document.createElement('p');
   newP.textContent = 'votes: ' + this.voteCount;
   newArticle.appendChild(newImg);
@@ -41,13 +43,12 @@ var boots = new Product('boots', 'img/boots.jpg');
 
 //========================================
 
-//function to display random product
+//function to render a random product
 var showRandomProduct = function(){
   var randomIndex = Math.floor(Math.random() * allProductsArr.length);
   var randomProduct = allProductsArr[randomIndex];
   randomProduct.render();
 };
-
 // shows three random products from the array, shows them on page
 for(var i = 0; i < 3; i++){
   showRandomProduct();
@@ -55,8 +56,6 @@ for(var i = 0; i < 3; i++){
 
 // ========= function to show three new random images on page ======
 function putNewProductsOnPage() {
-  console.log('called putNewProductsOnPage');
-
   var target = document.getElementById('products');
   target.innerHTML = '';
   for(var i = 0; i < 3; i++){
@@ -64,7 +63,6 @@ function putNewProductsOnPage() {
     allProductsArr[randomIndex].render();
   }
 }
-
 
 // === event handler ==== when image gets clicked on, its voteCount goes up, and three new images appear
 var votingSection = document.getElementById('products');
@@ -76,6 +74,17 @@ function handleClickOnProduct(event) {
     if(event.target.id === 'banana'){
       banana.voteCount++;
       console.log('banana votes: ' + banana.voteCount);
+      console.log('banana appearances: ' + banana.timesShown);
+    }
+    if(event.target.id === 'bag'){
+      bag.voteCount++;
+      console.log('bag votes: ' + bag.voteCount);
+      console.log('bag appearances: ' + bag.timesShown);
+    }
+    if(event.target.id === 'bathroom'){
+      bathroom.voteCount++;
+      console.log('bathroom votes: ' + bathroom.voteCount);
+      console.log('bathroom appearances: ' + bathroom.timesShown);
     }
     putNewProductsOnPage();
   }
