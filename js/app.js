@@ -36,13 +36,20 @@ Product.prototype.render = function(){
 var bag = new Product('bag','img/bag.jpg');
 var banana = new Product('banana', 'img/banana.jpg');
 var bathroom = new Product('bathroom', 'img/bathroom.jpg');
-bag.render();
-banana.render();
-bathroom.render();
+var boots = new Product('boots', 'img/boots.jpg');
+
 //========================================
 
 //function to display random product
-var getRandomProduct = function(){
-  var randomProduct = 
-  console.log();
+
+var showRandomProduct = function(){
+  var randomInt = Math.floor(Math.random() * allProductsArr.length);
+  var randomProduct = allProductsArr[randomInt];
+  randomProduct.render();
+};
+
+for(var i = 0; i < 3; i++){
+  showRandomProduct();
 }
+
+
