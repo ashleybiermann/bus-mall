@@ -11,6 +11,7 @@
 
 var allProductsArr = new Array;
 var totalVotes = 0;
+var maxVotes = 6;
 
 function Product(name, imgSrc) {
   this.name = name; // this will also be the id for the event listener
@@ -70,12 +71,21 @@ function putNewProductsOnPage() {
     allProductsArr[randomIndex].render();
   }
 }
+// ===== function to put All Products On Page ==============
+var putAllProductsOnPage = function(){
+  var target = document.getElementById('products');
+  target.innerHTML = '';
+  for(var i = 0; i < allProductsArr.length; i++) {
+    allProductsArr[i].render();
+  }
+};
 
-// === event handler ==== when image gets clicked on, its voteCount goes up, and three new images appear
+// === event handler ==== when image gets clicked on, its voteCount goes up, and three new images appear, then shows all products with votes and times shown=======
 var votingSection = document.getElementById('products');
 votingSection.addEventListener('click', handleClickOnProduct);
+
 function handleClickOnProduct(event) {
-  if(totalVotes < 4) {
+  if(totalVotes < maxVotes) {
     totalVotes++;
     // console.log('total votes: ' + totalVotes);
 
@@ -88,10 +98,10 @@ function handleClickOnProduct(event) {
     }
     putNewProductsOnPage();
   }
-  if(totalVotes === 4){ // TODO: Can this be it's own new page? ... does this 'turn off' the event listener?
-    totalVotes++;
-    for(var i = 0; i < allProductsArr.length; i++) {
-      allProductsArr[i].render(); //TODO: can this be replaces with a putAllProductsOnPage function instead?
-    }
+  if(totalVotes === maxVotes){
+    var votingSection = document.getElementById('products');
+    votingSection.removeEventListener('click', handleClickOnProduct);
+    putAllProductsOnPage();
   }
 }
+
