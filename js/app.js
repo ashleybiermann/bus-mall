@@ -16,7 +16,7 @@ function Product(name, imgSrc) {
   this.name = name;
   this.imgSrc = imgSrc;
   this.voteCount = 0;
-  this.timesShown = 0;
+  this.timesShown = -1;
   allProductsArr.push(this);
 }
 
@@ -27,11 +27,16 @@ Product.prototype.render = function(){
   var newImg = document.createElement('img');
   newImg.src = this.imgSrc;
   newImg.id = this.name; // for event listener, when I need to target it
-  this.timesShown ++; // counts up each times product is rendered TODO: does the user need to see this right away?
+  this.timesShown ++; // counts up each times product is rendered TODO: Does this need to go to another place?
   var newP = document.createElement('p'); // TODO: do I even NEED to show the user how many times they voted for something?
   newP.textContent = 'votes: ' + this.voteCount;
+
+  var newP2 = document.createElement('p');
+  newP2.textContent = 'Was an option ' + this.timesShown + 'times before'; //TODO: does the user need to see this right away?
+
   newArticle.appendChild(newImg);
   newArticle.appendChild(newP);
+  newArticle.appendChild(newP2);
   targetId.appendChild(newArticle);
 };
 
@@ -70,7 +75,9 @@ votingSection.addEventListener('click', handleClickOnProduct);
 function handleClickOnProduct(event) {
   if(totalVotes < 4) {
     totalVotes++;
-    console.log('total votes: ' + totalVotes);
+    // console.log('total votes: ' + totalVotes);
+
+    //TODO: this needs to go into a loop somehow
     if(event.target.id === 'banana'){
       banana.voteCount++;
       console.log('banana votes: ' + banana.voteCount);
@@ -86,11 +93,17 @@ function handleClickOnProduct(event) {
       console.log('bathroom votes: ' + bathroom.voteCount);
       console.log('bathroom appearances: ' + bathroom.timesShown);
     }
+    if(event.target.id === 'bathroom'){
+      bathroom.voteCount++;
+      console.log('bathroom votes: ' + bathroom.voteCount);
+      console.log('bathroom appearances: ' + bathroom.timesShown);
+    }
     putNewProductsOnPage();
   }
-  if(totalVotes === 4){
+  if(totalVotes === 4){ // 'turns off' the event listener?
+    totalVotes++;
     for(var i = 0; i < allProductsArr.length; i++) {
-      allProductsArr[i].render();
+      allProductsArr[i].render(); //
     }
   }
 }
