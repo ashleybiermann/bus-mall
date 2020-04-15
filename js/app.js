@@ -3,7 +3,7 @@
 //TODO: attach these to the object, so they are no longer global
 var allProductsArr = new Array();
 var totalVotes = 0;
-var maxVotes = 6;
+var maxVotes = 25;
 
 function Product(name, imgSrc) {
   this.name = name; // this will also be the id for the event listener
@@ -41,7 +41,19 @@ var boots = new Product('boots', 'img/boots.jpg');
 var breakfast = new Product('breakfast', 'img/breakfast.jpg');
 var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
 var chair = new Product('chair', 'img/chair.jpg');
-
+var cthulhu = new Product('cthulhu', 'img/cthulhu.jpg');
+var dogDuck = new Product('dog duck', 'img/dog-duck.jpg');
+var dragon = new Product('dragon', 'img/dragon.jpg');
+var pen = new Product('pen', 'img/pen.jpg');
+var petSweep = new Product('pet sweep', 'img/pet-sweep.jpg');
+var scissors = new Product('scissors', 'img/scissors.jpg');
+var shark = new Product('shark', 'img/shark.jpg');
+var sweep = new Product('sweep', 'img/sweep.png');
+var tauntaun = new Product('tauntaun', 'img/tauntaun.jpg');
+var unicorn = new Product('unicorn', 'img/unicorn.jpg');
+var usb = new Product('usb', 'img/usb.gif');
+var waterCan = new Product('water can', 'img/water-can.jpg');
+var wineGlass = new Product('wine glass', 'img/wine-glass.jpg');
 //========================================
 
 //LAB 12 - three unique products shown at a time ====
@@ -107,9 +119,12 @@ function handleClickOnProduct(event) {
   }
   if(totalVotes === maxVotes){
     var votingSection = document.getElementById('products');
+
+    votingSection.innerHTML = '';
+
     votingSection.removeEventListener('click', handleClickOnProduct);
     // ==== puts ALL products on page, SHOWS CHART
-    putAllProductsOnPage();
+    // putAllProductsOnPage();
     showChart();
   }
 }
@@ -122,9 +137,14 @@ function showChart(){
   }
 
   // extracts product vote counts from all products array, stores it in productVoteCounts[]
-  var productVoteCounts = new Array;
-  for(var i = 0; i< allProductsArr.length; i++){
+  var productVoteCounts = new Array();
+  for(var i = 0; i < allProductsArr.length; i++){
     productVoteCounts.push(allProductsArr[i].voteCount);
+  }
+
+  var productTimesSeen = new Array();
+  for(var i = 0; i < allProductsArr.length; i++){
+    productTimesSeen.push(allProductsArr[i].timesShown);
   }
 
   var ctx = document.getElementById('productDataChart').getContext('2d');
@@ -136,11 +156,18 @@ function showChart(){
       labels: productNames,
       datasets: [{
         label: 'Votes',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: '#CC33C7',
+        borderColor: '#FF879F',
         data: productVoteCounts,
+      },
+      {
+        label: 'Times Available',
+        backgroundColor: '#F6FFC1',
+        borderColor: 'rgb(255, 99, 132)',
+        data: productTimesSeen,
       }]
     },
+
 
     // Configuration options go here TODO: make it increment in ints only, no floats
     options:{
