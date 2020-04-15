@@ -1,13 +1,5 @@
 'use strict';
 
-// Plan overview
-// Display products
-// Click on a product = 1. votes get tallied, 2. new products come up
-// Repeat (25 votes)
-// Page after voting shows product and how many votes it got
-// =====================================
-
-// RenderToPage method attached to constructor
 //TODO: attach these to the object, so they are no longer global
 var allProductsArr = new Array();
 var totalVotes = 0;
@@ -48,6 +40,7 @@ var bathroom = new Product('bathroom', 'img/bathroom.jpg');
 var boots = new Product('boots', 'img/boots.jpg');
 var breakfast = new Product('breakfast', 'img/breakfast.jpg');
 var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
+var chair = new Product('chair', 'img/chair.jpg');
 
 //========================================
 
@@ -60,22 +53,21 @@ function getRandNum(){
 }
 
 function getThreeUnique(numsToAvoid){ // uses randNum from getRandNum()
-  var numsSeen = new Set(); // gives 3 random, unique numbers
+  var numsSeen = new Set(); // gives 3 random, unique numbers - if the same number comes up multiple times, it doesn't occupy a new space
   while (numsSeen.size < 3) {
-    var randNum = getRandNum();
-    if(!numsToAvoid.has(randNum)){ // if randNum is not in numsToAvoid, 
+    var randNum = getRandNum(); // is a different randNum than in the getRandNum function, scope
+    if(!numsToAvoid.has(randNum)){ // if randNum is not in numsToAvoid,
       numsSeen.add(randNum); // .add is to Set, as .push is to Array
     }
   }
   return numsSeen;
 }
-var uniqueThree = getThreeUnique(new Set());
-console.log(uniqueThree);
+var uniqueThree = getThreeUnique(new Set()); // new Set because you have to start somewhere, this is just an empty set
 
-//=========function to show three unique images ===========
+//=========function and call to show three unique images ===========
 
 function showUniqueThree(){
-  for (let num of uniqueThree){
+  for (let num of uniqueThree){ // iterates over the set, MDN referenced
     allProductsArr[num].render();
   }
 }
@@ -86,7 +78,7 @@ function putNewProductsOnPage() {
   var target = document.getElementById('products');
   target.innerHTML = '';
 
-  uniqueThree = getThreeUnique(uniqueThree);
+  uniqueThree = getThreeUnique(uniqueThree); // updates uniqueThree to get a new Set of nums, using the getThreeUnique function, passing in the now 'old' or numsToAvoid as a parameter to get new ones
   showUniqueThree();
 }
 // ===== function to put All Products On Page ==============
