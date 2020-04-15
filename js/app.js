@@ -51,6 +51,32 @@ var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
 
 //========================================
 
+//LAB 12 - three unique products shown at a time ====
+// need an array length of 3 with all unique values
+var uniqueThree = new Array;
+function showThreeUnique(){
+  var firstRandomIndex = Math.floor(Math.random() * allProductsArr.length);
+  uniqueThree.push(firstRandomIndex);
+
+  while (uniqueThree.length === 1){
+    var secondRandomIndex = Math.floor(Math.random() * allProductsArr.length);
+    if (firstRandomIndex !== secondRandomIndex) {
+      uniqueThree.push(secondRandomIndex);
+    }
+  }
+
+  while (uniqueThree.length === 2) {
+    var thirdRandomIndex = Math.floor(Math.random() * allProductsArr.length);
+    if (firstRandomIndex !== thirdRandomIndex && secondRandomIndex !== thirdRandomIndex){
+      uniqueThree.push(thirdRandomIndex);
+    }
+  }
+}
+
+showThreeUnique();
+console.log(uniqueThree);
+//=========
+
 //function to render a random product
 var showRandomProduct = function(){
   var randomIndex = Math.floor(Math.random() * allProductsArr.length);
@@ -132,7 +158,7 @@ function showChart(){
       }]
     },
 
-    // Configuration options go here
+    // Configuration options go here TODO: make it increment in ints only, no floats
     options:{
       scales: {
         yAxes: [{
