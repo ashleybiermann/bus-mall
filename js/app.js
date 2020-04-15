@@ -98,24 +98,27 @@ var putAllProductsOnPage = function(){
     allProductsArr[i].render();
   }
 };
-// ====== makes a version of allProducts[] into string for local storage ======
-var allProductsMadeStringy = JSON.stringify(allProductsArr);
 
 // === event handler ==== when image gets clicked on, its voteCount goes up ============
 var votingSection = document.getElementById('products');
 votingSection.addEventListener('click', handleClickOnProduct);
 
 function handleClickOnProduct(event) {
+  if(localStorage.getItem('totalVoteCount') > 0){
+    totalVotes = localStorage.getItem('totalVoteCount'); // retrieves data from local storage to prevent page reload from restarting the total vote count
+  }
   if(totalVotes < maxVotes) {
     totalVotes++;
+
+
+    localStorage.setItem('totalVoteCount', totalVotes); // stores totalVotes locally
 
     for(var i = 0; i < allProductsArr.length; i++){
       if(event.target.id === allProductsArr[i].name){
         allProductsArr[i].voteCount++;
         // add to local storage
-
-        localStorage.setItem('allProducts', allProductsMadeStringy);
-
+        var allProductsMadeStringy = JSON.stringify(allProductsArr); //makes a version of allProducts[] into string for local storage
+        localStorage.setItem('allProductsMadeStringy', allProductsMadeStringy);
       }
     }
     putNewProductsOnPage();
