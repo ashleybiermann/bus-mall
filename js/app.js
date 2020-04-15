@@ -9,7 +9,7 @@
 
 // RenderToPage method attached to constructor
 //TODO: attach these to the object, so they are no longer global
-var allProductsArr = new Array;
+var allProductsArr = new Array();
 var totalVotes = 0;
 var maxVotes = 6;
 
@@ -52,60 +52,42 @@ var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
 //========================================
 
 //LAB 12 - three unique products shown at a time ====
-// need an array length of 3 with all unique values
-var uniqueThree = new Array;
-function getThreeUnique(){
-  var firstRandomIndex = Math.floor(Math.random() * allProductsArr.length);
-  uniqueThree.push(firstRandomIndex);
+// need an array * SET!!* length of 3 with all unique values
 
-  while (uniqueThree.length === 1){
-    var secondRandomIndex = Math.floor(Math.random() * allProductsArr.length);
-    if (firstRandomIndex !== secondRandomIndex) {
-      uniqueThree.push(secondRandomIndex);
-    }
-  }
-
-  while (uniqueThree.length === 2) {
-    var thirdRandomIndex = Math.floor(Math.random() * allProductsArr.length);
-    if (firstRandomIndex !== thirdRandomIndex && secondRandomIndex !== thirdRandomIndex){
-      uniqueThree.push(thirdRandomIndex);
-    }
-  }
+function getRandNum(){
+  var randNum = Math.floor(Math.random() * allProductsArr.length);
+  return randNum; // gives one random number in the length of the array
 }
-getThreeUnique();
+
+function getThreeUnique(numsToAvoid){ // uses randNum from getRandNum()
+  var numsSeen = new Set(); // gives 3 random, unique numbers
+  while (numsSeen.size < 3) {
+    var randNum = getRandNum();
+    if(!numsToAvoid.has(randNum)){ // if randNum is not in numsToAvoid, 
+      numsSeen.add(randNum); // .add is to Set, as .push is to Array
+    }
+  }
+  return numsSeen;
+}
+var uniqueThree = getThreeUnique(new Set());
 console.log(uniqueThree);
+
 //=========function to show three unique images ===========
-//TODO: somehow, still now showing 3 actual unique images, even though the array values of uniqueThree are unique  Put together in one function getThree and showUnique?
 
 function showUniqueThree(){
-  for(var i = 0; i < uniqueThree.length; i++){
-    allProductsArr[(uniqueThree[i])].render();
+  for (let num of uniqueThree){
+    allProductsArr[num].render();
   }
 }
-
 showUniqueThree();
-
-//======WILL NEED TO GO AWAY once the showThreeUnique is finished======
-//function to render a single random product
-// var showRandomProduct = function(){
-//   var randomIndex = Math.floor(Math.random() * allProductsArr.length);
-//   var randomProduct = allProductsArr[randomIndex];
-//   randomProduct.render();
-// };
-// // shows three random products from the array, shows them on page
-// for(var i = 0; i < 3; i++){
-//   showRandomProduct();
-// }
-//======^^^===========================^^^====================
 
 // ========= function to show three new random images on page ======
 function putNewProductsOnPage() {
   var target = document.getElementById('products');
   target.innerHTML = '';
-  for(var i = 0; i < 3; i++){
-    var randomIndex = Math.floor(Math.random() * allProductsArr.length);
-    allProductsArr[randomIndex].render();
-  }
+
+  uniqueThree = getThreeUnique(uniqueThree);
+  showUniqueThree();
 }
 // ===== function to put All Products On Page ==============
 var putAllProductsOnPage = function(){
