@@ -54,7 +54,7 @@ var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
 //LAB 12 - three unique products shown at a time ====
 // need an array length of 3 with all unique values
 var uniqueThree = new Array;
-function showThreeUnique(){
+function getThreeUnique(){
   var firstRandomIndex = Math.floor(Math.random() * allProductsArr.length);
   uniqueThree.push(firstRandomIndex);
 
@@ -72,21 +72,31 @@ function showThreeUnique(){
     }
   }
 }
-
-showThreeUnique();
+getThreeUnique();
 console.log(uniqueThree);
-//=========
+//=========function to show three unique images ===========
+//TODO: somehow, still now showing 3 actual unique images, even though the array values of uniqueThree are unique  Put together in one function getThree and showUnique?
 
-//function to render a random product
-var showRandomProduct = function(){
-  var randomIndex = Math.floor(Math.random() * allProductsArr.length);
-  var randomProduct = allProductsArr[randomIndex];
-  randomProduct.render();
-};
-// shows three random products from the array, shows them on page
-for(var i = 0; i < 3; i++){
-  showRandomProduct();
+function showUniqueThree(){
+  for(var i = 0; i < uniqueThree.length; i++){
+    allProductsArr[(uniqueThree[i])].render();
+  }
 }
+
+showUniqueThree();
+
+//======WILL NEED TO GO AWAY once the showThreeUnique is finished======
+//function to render a single random product
+// var showRandomProduct = function(){
+//   var randomIndex = Math.floor(Math.random() * allProductsArr.length);
+//   var randomProduct = allProductsArr[randomIndex];
+//   randomProduct.render();
+// };
+// // shows three random products from the array, shows them on page
+// for(var i = 0; i < 3; i++){
+//   showRandomProduct();
+// }
+//======^^^===========================^^^====================
 
 // ========= function to show three new random images on page ======
 function putNewProductsOnPage() {
