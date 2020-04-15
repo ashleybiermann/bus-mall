@@ -128,7 +128,7 @@ function handleClickOnProduct(event) {
     showChart();
   }
 }
-//============ Chart Chart Chart =============================================
+//============ Chart Chart Chart ===========================================
 function showChart(){
   // extracts product names from all products array, stores it in productNames[]
   var productNames = new Array;
