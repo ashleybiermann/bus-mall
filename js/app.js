@@ -1,19 +1,12 @@
 'use strict';
 
-// Plan overview
-// Display products
-// Click on a product = 1. votes get tallied, 2. new products come up
-// Repeat (25 votes)
-// Page after voting shows product and how many votes it got
-// =====================================
-
-// RenderToPage method attached to constructor
-
-var allProductsArr = new Array;
+//TODO: attach these to the object, so they are no longer global
+var allProductsArr = new Array();
 var totalVotes = 0;
+var maxVotes = 25;
 
 function Product(name, imgSrc) {
-  this.name = name;
+  this.name = name; // this will also be the id for the event listener
   this.imgSrc = imgSrc;
   this.voteCount = 0;
   this.timesShown = -1;
@@ -45,65 +38,147 @@ var bag = new Product('bag','img/bag.jpg');
 var banana = new Product('banana', 'img/banana.jpg');
 var bathroom = new Product('bathroom', 'img/bathroom.jpg');
 var boots = new Product('boots', 'img/boots.jpg');
-
+var breakfast = new Product('breakfast', 'img/breakfast.jpg');
+var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
+var chair = new Product('chair', 'img/chair.jpg');
+var cthulhu = new Product('cthulhu', 'img/cthulhu.jpg');
+var dogDuck = new Product('dog duck', 'img/dog-duck.jpg');
+var dragon = new Product('dragon', 'img/dragon.jpg');
+var pen = new Product('pen', 'img/pen.jpg');
+var petSweep = new Product('pet sweep', 'img/pet-sweep.jpg');
+var scissors = new Product('scissors', 'img/scissors.jpg');
+var shark = new Product('shark', 'img/shark.jpg');
+var sweep = new Product('sweep', 'img/sweep.png');
+var tauntaun = new Product('tauntaun', 'img/tauntaun.jpg');
+var unicorn = new Product('unicorn', 'img/unicorn.jpg');
+var usb = new Product('usb', 'img/usb.gif');
+var waterCan = new Product('water can', 'img/water-can.jpg');
+var wineGlass = new Product('wine glass', 'img/wine-glass.jpg');
 //========================================
 
-//function to render a random product
-var showRandomProduct = function(){
-  var randomIndex = Math.floor(Math.random() * allProductsArr.length);
-  var randomProduct = allProductsArr[randomIndex];
-  randomProduct.render();
-};
-// shows three random products from the array, shows them on page
-for(var i = 0; i < 3; i++){
-  showRandomProduct();
+//LAB 12 - three unique products shown at a time ====
+// need an array * SET!!* length of 3 with all unique values
+
+function getRandNum(){
+  var randNum = Math.floor(Math.random() * allProductsArr.length);
+  return randNum; // gives one random number in the length of the array
 }
+
+function getThreeUnique(numsToAvoid){ // uses randNum from getRandNum()
+  var numsSeen = new Set(); // gives 3 random, unique numbers - if the same number comes up multiple times, it doesn't occupy a new space
+  while (numsSeen.size < 3) {
+    var randNum = getRandNum(); // is a different randNum than in the getRandNum function, scope
+    if(!numsToAvoid.has(randNum)){ // if randNum is not in numsToAvoid,
+      numsSeen.add(randNum); // .add is to Set, as .push is to Array
+    }
+  }
+  return numsSeen;
+}
+var uniqueThree = getThreeUnique(new Set()); // new Set because you have to start somewhere, this is just an empty set
+
+//=========function and call to show three unique images ===========
+
+function showUniqueThree(){
+  for (let num of uniqueThree){ // iterates over the set, MDN referenced
+    allProductsArr[num].render();
+  }
+}
+showUniqueThree();
 
 // ========= function to show three new random images on page ======
 function putNewProductsOnPage() {
   var target = document.getElementById('products');
   target.innerHTML = '';
-  for(var i = 0; i < 3; i++){
-    var randomIndex = Math.floor(Math.random() * allProductsArr.length);
-    allProductsArr[randomIndex].render();
-  }
-}
 
-// === event handler ==== when image gets clicked on, its voteCount goes up, and three new images appear
+  uniqueThree = getThreeUnique(uniqueThree); // updates uniqueThree to get a new Set of nums, using the getThreeUnique function, passing in the now 'old' or numsToAvoid as a parameter to get new ones
+  showUniqueThree();
+}
+// ===== function to put All Products On Page ==============
+var putAllProductsOnPage = function(){
+  var target = document.getElementById('products');
+  target.innerHTML = '';
+  for(var i = 0; i < allProductsArr.length; i++) {
+    allProductsArr[i].render();
+  }
+};
+
+// === event handler ==== when image gets clicked on, its voteCount goes up, and three new images appear, then shows all products with votes and times shown=======
 var votingSection = document.getElementById('products');
 votingSection.addEventListener('click', handleClickOnProduct);
-function handleClickOnProduct(event) {
-  if(totalVotes < 4) {
-    totalVotes++;
-    // console.log('total votes: ' + totalVotes);
 
-    //TODO: this needs to go into a loop somehow
-    if(event.target.id === 'banana'){
-      banana.voteCount++;
-      console.log('banana votes: ' + banana.voteCount);
-      console.log('banana appearances: ' + banana.timesShown);
-    }
-    if(event.target.id === 'bag'){
-      bag.voteCount++;
-      console.log('bag votes: ' + bag.voteCount);
-      console.log('bag appearances: ' + bag.timesShown);
-    }
-    if(event.target.id === 'bathroom'){
-      bathroom.voteCount++;
-      console.log('bathroom votes: ' + bathroom.voteCount);
-      console.log('bathroom appearances: ' + bathroom.timesShown);
-    }
-    if(event.target.id === 'bathroom'){
-      bathroom.voteCount++;
-      console.log('bathroom votes: ' + bathroom.voteCount);
-      console.log('bathroom appearances: ' + bathroom.timesShown);
+function handleClickOnProduct(event) {
+  if(totalVotes < maxVotes) {
+    totalVotes++;
+
+    for(var i = 0; i < allProductsArr.length; i++){
+      if(event.target.id === allProductsArr[i].name){
+        allProductsArr[i].voteCount++;
+      }
     }
     putNewProductsOnPage();
   }
-  if(totalVotes === 4){ // TODO: Can this be it's own new page? ... does this 'turn off' the event listener?
-    totalVotes++;
-    for(var i = 0; i < allProductsArr.length; i++) {
-      allProductsArr[i].render(); //TODO: can this be replaces with a putAllProductsOnPage function instead?
-    }
+  if(totalVotes === maxVotes){
+    var votingSection = document.getElementById('products');
+
+    votingSection.innerHTML = '';
+
+    votingSection.removeEventListener('click', handleClickOnProduct);
+    // ==== puts ALL products on page, SHOWS CHART
+    // putAllProductsOnPage();
+    showChart();
   }
 }
+//============ Chart Chart Chart =============================================
+function showChart(){
+  // extracts product names from all products array, stores it in productNames[]
+  var productNames = new Array;
+  for(var i = 0; i < allProductsArr.length; i++){
+    productNames.push(allProductsArr[i].name);
+  }
+
+  // extracts product vote counts from all products array, stores it in productVoteCounts[]
+  var productVoteCounts = new Array();
+  for(var i = 0; i < allProductsArr.length; i++){
+    productVoteCounts.push(allProductsArr[i].voteCount);
+  }
+
+  var productTimesSeen = new Array();
+  for(var i = 0; i < allProductsArr.length; i++){
+    productTimesSeen.push(allProductsArr[i].timesShown);
+  }
+
+  var ctx = document.getElementById('productDataChart').getContext('2d');
+  var productDataChart = new Chart(ctx, {
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Votes',
+        backgroundColor: '#CC33C7',
+        borderColor: '#FF879F',
+        data: productVoteCounts,
+      },
+      {
+        label: 'Times Available',
+        backgroundColor: '#F6FFC1',
+        borderColor: 'rgb(255, 99, 132)',
+        data: productTimesSeen,
+      }]
+    },
+
+
+    // Configuration options go here TODO: make it increment in ints only, no floats
+    options:{
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}
+
