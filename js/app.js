@@ -3,7 +3,7 @@
 //TODO: attach these to the object, so they are no longer global
 var allProductsArr = new Array();
 var totalVotes = 0;
-var maxVotes = 25;
+var maxVotes = 6;
 
 function Product(name, imgSrc) {
   this.name = name; // this will also be the id for the event listener
@@ -34,31 +34,28 @@ Product.prototype.render = function(){
 };
 
 // ================ creating new Products and rendering them to page ===============
-var bag = new Product('bag','img/bag.jpg');
-var banana = new Product('banana', 'img/banana.jpg');
-var bathroom = new Product('bathroom', 'img/bathroom.jpg');
-var boots = new Product('boots', 'img/boots.jpg');
-var breakfast = new Product('breakfast', 'img/breakfast.jpg');
-var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
-var chair = new Product('chair', 'img/chair.jpg');
-var cthulhu = new Product('cthulhu', 'img/cthulhu.jpg');
-var dogDuck = new Product('dog duck', 'img/dog-duck.jpg');
-var dragon = new Product('dragon', 'img/dragon.jpg');
-var pen = new Product('pen', 'img/pen.jpg');
-var petSweep = new Product('pet sweep', 'img/pet-sweep.jpg');
-var scissors = new Product('scissors', 'img/scissors.jpg');
-var shark = new Product('shark', 'img/shark.jpg');
-var sweep = new Product('sweep', 'img/sweep.png');
-var tauntaun = new Product('tauntaun', 'img/tauntaun.jpg');
-var unicorn = new Product('unicorn', 'img/unicorn.jpg');
-var usb = new Product('usb', 'img/usb.gif');
-var waterCan = new Product('water can', 'img/water-can.jpg');
-var wineGlass = new Product('wine glass', 'img/wine-glass.jpg');
-//========================================
-
-//LAB 12 - three unique products shown at a time ====
-// need an array * SET!!* length of 3 with all unique values
-
+new Product('bag','img/bag.jpg');
+new Product('banana', 'img/banana.jpg');
+new Product('bathroom', 'img/bathroom.jpg');
+new Product('boots', 'img/boots.jpg');
+new Product('breakfast', 'img/breakfast.jpg');
+new Product('bubblegum', 'img/bubblegum.jpg');
+new Product('chair', 'img/chair.jpg');
+new Product('cthulhu', 'img/cthulhu.jpg');
+new Product('dog duck', 'img/dog-duck.jpg');
+new Product('dragon', 'img/dragon.jpg');
+new Product('pen', 'img/pen.jpg');
+new Product('pet sweep', 'img/pet-sweep.jpg');
+new Product('scissors', 'img/scissors.jpg');
+new Product('shark', 'img/shark.jpg');
+new Product('sweep', 'img/sweep.png');
+new Product('tauntaun', 'img/tauntaun.jpg');
+new Product('unicorn', 'img/unicorn.jpg');
+new Product('usb', 'img/usb.gif');
+new Product('water can', 'img/water-can.jpg');
+new Product('wine glass', 'img/wine-glass.jpg');
+//============================================================
+// =============functions to get three unique products, and different from last time ====
 function getRandNum(){
   var randNum = Math.floor(Math.random() * allProductsArr.length);
   return randNum; // gives one random number in the length of the array
@@ -101,8 +98,10 @@ var putAllProductsOnPage = function(){
     allProductsArr[i].render();
   }
 };
+// ====== makes a version of allProducts[] into string for local storage ======
+var allProductsMadeStringy = JSON.stringify(allProductsArr);
 
-// === event handler ==== when image gets clicked on, its voteCount goes up, and three new images appear, then shows all products with votes and times shown=======
+// === event handler ==== when image gets clicked on, its voteCount goes up ============
 var votingSection = document.getElementById('products');
 votingSection.addEventListener('click', handleClickOnProduct);
 
@@ -113,6 +112,10 @@ function handleClickOnProduct(event) {
     for(var i = 0; i < allProductsArr.length; i++){
       if(event.target.id === allProductsArr[i].name){
         allProductsArr[i].voteCount++;
+        // add to local storage
+
+        localStorage.setItem('allProducts', allProductsMadeStringy);
+
       }
     }
     putNewProductsOnPage();
