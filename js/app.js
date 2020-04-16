@@ -34,6 +34,22 @@ Product.prototype.render = function(){
 };
 
 // ================ creating new Products and rendering them to page ===============
+// TODO: if any of these products already exist in local storage, then update their vote count to whatever it says in local storage . need to re instantiate the array from local storage
+
+// get the string data from local storage
+var productsFromStorageStillAString = localStorage.getItem('allProductsMadeStringy');
+
+
+//turn it back into an array
+if (productsFromStorageStillAString !== null){
+  var productsFromLocalStorage = JSON.parse(productsFromStorageStillAString);
+  console.log('allProductsMadeStringy, after being parsed ', productsFromLocalStorage);
+  var reInstantiatedProducts = new Array();
+  for(var i = 0; i < productsFromLocalStorage.length; i++){
+    reInstantiatedProducts.push(new Product(productsFromLocalStorage[i].name, productsFromLocalStorage[i].imgSrc, productsFromLocalStorage[i].voteCount));
+  }
+}
+
 new Product('bag','img/bag.jpg');
 new Product('banana', 'img/banana.jpg');
 new Product('bathroom', 'img/bathroom.jpg');
@@ -90,16 +106,8 @@ function putNewProductsOnPage() {
   uniqueThree = getThreeUnique(uniqueThree); // updates uniqueThree to get a new Set of nums, using the getThreeUnique function, passing in the now 'old' or numsToAvoid as a parameter to get new ones
   showUniqueThree();
 }
-// ===== function to put All Products On Page ==============
-var putAllProductsOnPage = function(){
-  var target = document.getElementById('products');
-  target.innerHTML = '';
-  for(var i = 0; i < allProductsArr.length; i++) {
-    allProductsArr[i].render();
-  }
-};
 
-// === event handler ==== when image gets clicked on, its voteCount goes up ============
+// === Event Handler ==== when image gets clicked on, its voteCount goes up ============
 var votingSection = document.getElementById('products');
 votingSection.addEventListener('click', handleClickOnProduct);
 
@@ -109,8 +117,6 @@ function handleClickOnProduct(event) {
   }
   if(totalVotes < maxVotes) {
     totalVotes++;
-
-
     localStorage.setItem('totalVoteCount', totalVotes); // stores totalVotes locally
 
     for(var i = 0; i < allProductsArr.length; i++){
@@ -125,16 +131,13 @@ function handleClickOnProduct(event) {
   }
   if(totalVotes === maxVotes){
     var votingSection = document.getElementById('products');
-
     votingSection.innerHTML = '';
-
     votingSection.removeEventListener('click', handleClickOnProduct);
-    // ==== puts ALL products on page, SHOWS CHART
-    // putAllProductsOnPage();
+    //SHOWS CHART
     showChart();
   }
 }
-//============ Chart Chart Chart ===========================================
+//=================== Chart Chart Chart ===========================================
 function showChart(){
   // extracts product names from all products array, stores it in productNames[]
   var productNames = new Array;
@@ -154,7 +157,8 @@ function showChart(){
   }
 
   var ctx = document.getElementById('productDataChart').getContext('2d');
-  var productDataChart = new Chart(ctx, {
+  // eslint-disable-next-line no-undef
+  new Chart(ctx, {
     type: 'bar',
 
     // The data for our dataset
