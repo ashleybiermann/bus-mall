@@ -3,13 +3,13 @@
 //TODO: attach these to the object, so they are no longer global
 var allProductsArr = new Array();
 var totalVotes = 0;
-var maxVotes = 25;
+var maxVotes = 6;
 
-function Product(name, imgSrc) {
+function Product(name, imgSrc, voteCount = 0, timesShown = 0) {
   this.name = name; // this will also be the id for the event listener
   this.imgSrc = imgSrc;
-  this.voteCount = 0;
-  this.timesShown = -1;
+  this.voteCount = voteCount;
+  this.timesShown = timesShown;
   allProductsArr.push(this);
 }
 
@@ -34,31 +34,44 @@ Product.prototype.render = function(){
 };
 
 // ================ creating new Products and rendering them to page ===============
-var bag = new Product('bag','img/bag.jpg');
-var banana = new Product('banana', 'img/banana.jpg');
-var bathroom = new Product('bathroom', 'img/bathroom.jpg');
-var boots = new Product('boots', 'img/boots.jpg');
-var breakfast = new Product('breakfast', 'img/breakfast.jpg');
-var bubblegum = new Product('bubblegum', 'img/bubblegum.jpg');
-var chair = new Product('chair', 'img/chair.jpg');
-var cthulhu = new Product('cthulhu', 'img/cthulhu.jpg');
-var dogDuck = new Product('dog duck', 'img/dog-duck.jpg');
-var dragon = new Product('dragon', 'img/dragon.jpg');
-var pen = new Product('pen', 'img/pen.jpg');
-var petSweep = new Product('pet sweep', 'img/pet-sweep.jpg');
-var scissors = new Product('scissors', 'img/scissors.jpg');
-var shark = new Product('shark', 'img/shark.jpg');
-var sweep = new Product('sweep', 'img/sweep.png');
-var tauntaun = new Product('tauntaun', 'img/tauntaun.jpg');
-var unicorn = new Product('unicorn', 'img/unicorn.jpg');
-var usb = new Product('usb', 'img/usb.gif');
-var waterCan = new Product('water can', 'img/water-can.jpg');
-var wineGlass = new Product('wine glass', 'img/wine-glass.jpg');
-//========================================
 
-//LAB 12 - three unique products shown at a time ====
-// need an array * SET!!* length of 3 with all unique values
+// get the string data from local storage
+var productsFromStorageStillAString = localStorage.getItem('allProductsMadeStringy');
 
+//turn it back into an array - NOT push it into the same array as the original one
+if (productsFromStorageStillAString !== null){
+  var productsFromLocalStorage = JSON.parse(productsFromStorageStillAString);
+  console.log('allProductsMadeStringy, after being parsed ', productsFromLocalStorage);
+  var reInstantiatedProducts = new Array();
+  for(var i = 0; i < productsFromLocalStorage.length; i++){
+    reInstantiatedProducts.push(new Product(productsFromLocalStorage[i].name, productsFromLocalStorage[i].imgSrc, productsFromLocalStorage[i].voteCount, productsFromLocalStorage[i].timesShown));
+  }
+} else {
+  new Product('bag','img/bag.jpg');
+  new Product('banana', 'img/banana.jpg');
+  new Product('bathroom', 'img/bathroom.jpg');
+  new Product('boots', 'img/boots.jpg');
+  new Product('breakfast', 'img/breakfast.jpg');
+  new Product('bubblegum', 'img/bubblegum.jpg');
+  new Product('chair', 'img/chair.jpg');
+  new Product('cthulhu', 'img/cthulhu.jpg');
+  new Product('dog duck', 'img/dog-duck.jpg');
+  new Product('dragon', 'img/dragon.jpg');
+  new Product('pen', 'img/pen.jpg');
+  new Product('pet sweep', 'img/pet-sweep.jpg');
+  new Product('scissors', 'img/scissors.jpg');
+  new Product('shark', 'img/shark.jpg');
+  new Product('sweep', 'img/sweep.png');
+  new Product('tauntaun', 'img/tauntaun.jpg');
+  new Product('unicorn', 'img/unicorn.jpg');
+  new Product('usb', 'img/usb.gif');
+  new Product('water can', 'img/water-can.jpg');
+  new Product('wine glass', 'img/wine-glass.jpg');
+}
+
+
+//============================================================
+// =============functions to get three unique products, and different from last time ====
 function getRandNum(){
   var randNum = Math.floor(Math.random() * allProductsArr.length);
   return randNum; // gives one random number in the length of the array
@@ -93,42 +106,39 @@ function putNewProductsOnPage() {
   uniqueThree = getThreeUnique(uniqueThree); // updates uniqueThree to get a new Set of nums, using the getThreeUnique function, passing in the now 'old' or numsToAvoid as a parameter to get new ones
   showUniqueThree();
 }
-// ===== function to put All Products On Page ==============
-var putAllProductsOnPage = function(){
-  var target = document.getElementById('products');
-  target.innerHTML = '';
-  for(var i = 0; i < allProductsArr.length; i++) {
-    allProductsArr[i].render();
-  }
-};
 
-// === event handler ==== when image gets clicked on, its voteCount goes up, and three new images appear, then shows all products with votes and times shown=======
+// === Event Handler ==== when image gets clicked on, its voteCount goes up ============
 var votingSection = document.getElementById('products');
 votingSection.addEventListener('click', handleClickOnProduct);
 
 function handleClickOnProduct(event) {
+  if(localStorage.getItem('totalVoteCount') > 0){
+    totalVotes = localStorage.getItem('totalVoteCount'); // retrieves data from local storage to prevent page reload from zero-ing out the total vote count
+  }
   if(totalVotes < maxVotes) {
     totalVotes++;
+    localStorage.setItem('totalVoteCount', totalVotes); // stores totalVotes locally
 
     for(var i = 0; i < allProductsArr.length; i++){
       if(event.target.id === allProductsArr[i].name){
         allProductsArr[i].voteCount++;
+        // add to local storage
+        var allProductsMadeStringy = JSON.stringify(allProductsArr); //makes a version of allProducts[] into string for local storage
+        localStorage.setItem('allProductsMadeStringy', allProductsMadeStringy);
       }
     }
     putNewProductsOnPage();
   }
   if(totalVotes === maxVotes){
+    localStorage.setItem('totalVoteCount', 0);
     var votingSection = document.getElementById('products');
-
     votingSection.innerHTML = '';
-
     votingSection.removeEventListener('click', handleClickOnProduct);
-    // ==== puts ALL products on page, SHOWS CHART
-    // putAllProductsOnPage();
+    //SHOWS CHART
     showChart();
   }
 }
-//============ Chart Chart Chart ===========================================
+//=================== Chart Chart Chart ===========================================
 function showChart(){
   // extracts product names from all products array, stores it in productNames[]
   var productNames = new Array;
@@ -148,7 +158,8 @@ function showChart(){
   }
 
   var ctx = document.getElementById('productDataChart').getContext('2d');
-  var productDataChart = new Chart(ctx, {
+  // eslint-disable-next-line no-undef
+  new Chart(ctx, {
     type: 'bar',
 
     // The data for our dataset
