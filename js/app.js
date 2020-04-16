@@ -5,11 +5,11 @@ var allProductsArr = new Array();
 var totalVotes = 0;
 var maxVotes = 6;
 
-function Product(name, imgSrc, voteCount = 0) {
+function Product(name, imgSrc, voteCount = 0, timesShown = 0) {
   this.name = name; // this will also be the id for the event listener
   this.imgSrc = imgSrc;
   this.voteCount = voteCount;
-  this.timesShown = -1;
+  this.timesShown = timesShown;
   allProductsArr.push(this);
 }
 
@@ -44,7 +44,7 @@ if (productsFromStorageStillAString !== null){
   console.log('allProductsMadeStringy, after being parsed ', productsFromLocalStorage);
   var reInstantiatedProducts = new Array();
   for(var i = 0; i < productsFromLocalStorage.length; i++){
-    reInstantiatedProducts.push(new Product(productsFromLocalStorage[i].name, productsFromLocalStorage[i].imgSrc, productsFromLocalStorage[i].voteCount));
+    reInstantiatedProducts.push(new Product(productsFromLocalStorage[i].name, productsFromLocalStorage[i].imgSrc, productsFromLocalStorage[i].voteCount, productsFromLocalStorage[i].timesShown));
   }
 } else {
   new Product('bag','img/bag.jpg');
