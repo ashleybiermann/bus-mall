@@ -5,10 +5,10 @@ var allProductsArr = new Array();
 var totalVotes = 0;
 var maxVotes = 6;
 
-function Product(name, imgSrc) {
+function Product(name, imgSrc, voteCount = 0) {
   this.name = name; // this will also be the id for the event listener
   this.imgSrc = imgSrc;
-  this.voteCount = 0;
+  this.voteCount = voteCount;
   this.timesShown = -1;
   allProductsArr.push(this);
 }
@@ -34,13 +34,11 @@ Product.prototype.render = function(){
 };
 
 // ================ creating new Products and rendering them to page ===============
-// TODO: if any of these products already exist in local storage, then update their vote count to whatever it says in local storage . need to re instantiate the array from local storage
 
 // get the string data from local storage
 var productsFromStorageStillAString = localStorage.getItem('allProductsMadeStringy');
 
-
-//turn it back into an array
+//turn it back into an array - NOT push it into the same array as the original one
 if (productsFromStorageStillAString !== null){
   var productsFromLocalStorage = JSON.parse(productsFromStorageStillAString);
   console.log('allProductsMadeStringy, after being parsed ', productsFromLocalStorage);
@@ -48,28 +46,30 @@ if (productsFromStorageStillAString !== null){
   for(var i = 0; i < productsFromLocalStorage.length; i++){
     reInstantiatedProducts.push(new Product(productsFromLocalStorage[i].name, productsFromLocalStorage[i].imgSrc, productsFromLocalStorage[i].voteCount));
   }
+} else {
+  new Product('bag','img/bag.jpg');
+  new Product('banana', 'img/banana.jpg');
+  new Product('bathroom', 'img/bathroom.jpg');
+  new Product('boots', 'img/boots.jpg');
+  new Product('breakfast', 'img/breakfast.jpg');
+  new Product('bubblegum', 'img/bubblegum.jpg');
+  new Product('chair', 'img/chair.jpg');
+  new Product('cthulhu', 'img/cthulhu.jpg');
+  new Product('dog duck', 'img/dog-duck.jpg');
+  new Product('dragon', 'img/dragon.jpg');
+  new Product('pen', 'img/pen.jpg');
+  new Product('pet sweep', 'img/pet-sweep.jpg');
+  new Product('scissors', 'img/scissors.jpg');
+  new Product('shark', 'img/shark.jpg');
+  new Product('sweep', 'img/sweep.png');
+  new Product('tauntaun', 'img/tauntaun.jpg');
+  new Product('unicorn', 'img/unicorn.jpg');
+  new Product('usb', 'img/usb.gif');
+  new Product('water can', 'img/water-can.jpg');
+  new Product('wine glass', 'img/wine-glass.jpg');
 }
 
-new Product('bag','img/bag.jpg');
-new Product('banana', 'img/banana.jpg');
-new Product('bathroom', 'img/bathroom.jpg');
-new Product('boots', 'img/boots.jpg');
-new Product('breakfast', 'img/breakfast.jpg');
-new Product('bubblegum', 'img/bubblegum.jpg');
-new Product('chair', 'img/chair.jpg');
-new Product('cthulhu', 'img/cthulhu.jpg');
-new Product('dog duck', 'img/dog-duck.jpg');
-new Product('dragon', 'img/dragon.jpg');
-new Product('pen', 'img/pen.jpg');
-new Product('pet sweep', 'img/pet-sweep.jpg');
-new Product('scissors', 'img/scissors.jpg');
-new Product('shark', 'img/shark.jpg');
-new Product('sweep', 'img/sweep.png');
-new Product('tauntaun', 'img/tauntaun.jpg');
-new Product('unicorn', 'img/unicorn.jpg');
-new Product('usb', 'img/usb.gif');
-new Product('water can', 'img/water-can.jpg');
-new Product('wine glass', 'img/wine-glass.jpg');
+
 //============================================================
 // =============functions to get three unique products, and different from last time ====
 function getRandNum(){
@@ -113,7 +113,7 @@ votingSection.addEventListener('click', handleClickOnProduct);
 
 function handleClickOnProduct(event) {
   if(localStorage.getItem('totalVoteCount') > 0){
-    totalVotes = localStorage.getItem('totalVoteCount'); // retrieves data from local storage to prevent page reload from restarting the total vote count
+    totalVotes = localStorage.getItem('totalVoteCount'); // retrieves data from local storage to prevent page reload from zero-ing out the total vote count
   }
   if(totalVotes < maxVotes) {
     totalVotes++;
@@ -130,6 +130,7 @@ function handleClickOnProduct(event) {
     putNewProductsOnPage();
   }
   if(totalVotes === maxVotes){
+    localStorage.setItem('totalVoteCount', 0);
     var votingSection = document.getElementById('products');
     votingSection.innerHTML = '';
     votingSection.removeEventListener('click', handleClickOnProduct);
