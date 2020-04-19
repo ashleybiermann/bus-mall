@@ -13,7 +13,7 @@ function Product(name, imgSrc, voteCount = 0, timesShown = 0) {
   allProductsArr.push(this);
 }
 
-//attach to section, will be creating articles
+//attaches to HTML section, will be creating articles
 Product.prototype.render = function(){
   var targetId = document.getElementById('products');
   var newArticle = document.createElement('article');
@@ -68,7 +68,6 @@ if (productsFromStorageStillAString !== null){
   new Product('water can', 'img/water-can.jpg');
   new Product('wine glass', 'img/wine-glass.jpg');
 }
-
 
 //============================================================
 // =============functions to get three unique products, and different from last time ====
@@ -161,7 +160,6 @@ function showChart(){
   // eslint-disable-next-line no-undef
   new Chart(ctx, {
     type: 'bar',
-
     // The data for our dataset
     data: {
       labels: productNames,
@@ -179,8 +177,7 @@ function showChart(){
       }]
     },
 
-
-    // Configuration options go here TODO: make it increment in ints only, no floats
+    // Configuration options go here. Currently, shows floats and not just ints
     options:{
       scales: {
         yAxes: [{

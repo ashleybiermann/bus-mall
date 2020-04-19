@@ -2,32 +2,36 @@
 
 ## Synopsis
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+This app is a customer survey that shows the user multiple product images, the user votes, and the data is collected to create a results chart upon completion. The results are intended to be used to inform a company's decision making process.
 
 ## Code Example
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+var votingSection = document.getElementById('products');
+votingSection.addEventListener('click', handleClickOnProduct);
+
+function handleClickOnProduct(event) {
+  if(localStorage.getItem('totalVoteCount') > 0){
+    totalVotes = localStorage.getItem('totalVoteCount'); // retrieves data from local storage to prevent page reload from zero-ing out the total vote count
+  }
+  if(totalVotes < maxVotes) {
+    totalVotes++;
+    localStorage.setItem('totalVoteCount', totalVotes);
 
 ## Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+Gather consumer information to inform business decisions.
 
 ## Installation
-
-Provide code examples and explanations of how to get the project.
+None
 
 ## API Reference
-
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+None
 
 ## Tests
-
-Describe and show how to run the tests with code examples.
+In progress
 
 ## Contributors
-
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+In progress
 
 ## License
-
-A short snippet describing the license (MIT, Apache, etc.)
+MIT
