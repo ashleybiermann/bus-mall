@@ -3,7 +3,7 @@
 //TODO: attach these to the object, so they are no longer global
 var allProductsArr = new Array();
 var totalVotes = 0;
-var maxVotes = 6;
+var maxVotes = 25;
 
 function Product(name, imgSrc, voteCount = 0, timesShown = 0) {
   this.name = name; // this will also be the id for the event listener
@@ -19,17 +19,17 @@ Product.prototype.render = function(){
   var newArticle = document.createElement('article');
   var newImg = document.createElement('img');
   newImg.src = this.imgSrc;
-  newImg.id = this.name; // for event listener, when I need to target it
-  this.timesShown ++; // counts up each times product is rendered TODO: Does this need to go to another place?
-  var newP = document.createElement('p'); // TODO: do I even NEED to show the user how many times they voted for something?
+  newImg.id = this.name; // used as a target in event listener
+  this.timesShown ++; // counts up each times product is rendered
+  var newP = document.createElement('p');
   newP.textContent = 'votes: ' + this.voteCount;
 
   var newP2 = document.createElement('p');
-  newP2.textContent = 'Was an option ' + this.timesShown + ' times before'; //TODO: does the user need to see this right away?
+  newP2.textContent = 'Has now been an option ' + this.timesShown + ' times';
 
   newArticle.appendChild(newImg);
-  newArticle.appendChild(newP);
-  newArticle.appendChild(newP2);
+  // newArticle.appendChild(newP); Uncomment if you want user to see how many times they have voted for a product
+  // newArticle.appendChild(newP2); Uncomment if you want use to see how many times they have had an product as an option
   targetId.appendChild(newArticle);
 };
 

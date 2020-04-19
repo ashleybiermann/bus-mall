@@ -1,18 +1,43 @@
-
+/* 
 * {
   outline: dotted 1px red;
+} */
+
+body {
+  background-color: #F1FFDB;
+  color: #1E211E; 
 }
 
 header {
-  width: 960px;
   margin-left: auto;
   margin-right: auto;
+  font-family: 'Overpass', sans-serif;
+  text-align: center;
+}
+
+header > h1 {
+  background-color: #DDE3FF;
+  font-size: 42px;
+  font-weight: bold;
+  padding-top: 24px;
+  padding-bottom: 10px;
+}
+
+header > h2 {
+  margin-top: 12px;
+  font-size: 28px;
+}
+
+header > p {
+  margin-top: 8px;
 }
 
 main {
   width: 960px;
+  margin-top: 36px;
   margin-left: auto;
   margin-right: auto;
+  font-family: 'Overpass', sans-serif;
 }
 
 main > section > article {
@@ -26,11 +51,15 @@ main > section > article > img {
 }
 
 main > section > article > p {
-  font-size: 26px;
+  margin-top: 8px;
+  font-size: 16px;
+  color: darkslategray;
 }
 
 footer {
   width: 960px;
   margin-left: auto;
   margin-right: auto;
+  font-family: 'Overpass', sans-serif;
+  text-align: center;
 }
